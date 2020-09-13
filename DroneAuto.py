@@ -27,7 +27,7 @@ def getPointsInConvex(allPoints, convex):
 
 
 if __name__ == '__main__':
-    doc = edf.readfile('/Users/lawrence/Desktop/Drawing1(dimensions).dxf')
+    doc = edf.readfile('./resources/dxfs/Drawing1(dimensions).dxf')
     msp = doc.modelspace()
     for e in msp.query('LINE'):
         print_entity(e)
