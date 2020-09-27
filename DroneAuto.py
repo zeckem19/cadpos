@@ -27,17 +27,21 @@ def getPointsInConvex(allPoints, convex):
 
 
 if __name__ == '__main__':
-    doc = edf.readfile('./resources/dxfs/Drawing1(dimensions).dxf')
+    doc = edf.readfile('./resources/dxfs/Drawing5- 2 squares(dimensions).dxf')
     msp = doc.modelspace()
     for e in msp.query('LINE'):
         print_entity(e)
         getPoints(e)
 
     convex = edf.math.convex_hull_2d(allPoints)
+    #offsetVertices = list(edf.math.offset_vertices_2d(convex,offset=0.01, closed=True))
     innerPoints = getPointsInConvex(allPoints, convex)
 
     innerConvex = edf.math.convex_hull_2d(innerPoints)
 
-    print(convex)
-    print(innerPoints)
-    print(innerConvex)
+
+    for i in [convex,innerPoints,innerConvex]:
+        print(f'Total: {len(i)}')
+        for j in i:
+            print(j)
+        print('-'*20)
