@@ -1,0 +1,6 @@
+DIST,Number of Anchors,[AN+Anchor number,Anchor ID,X-Position,Y-Position,Z-Position,Distance to the tag],POS,X-Position of Tag,Y-Position of Tag,Z-Position of Tag
+DIST,3,
+AN0,8182,2.18,0.00,0.00,0.83,
+AN1,0F8C,2.12,1.04,0.00,0.18,
+AN2,5C2F,0.00,0.00,0.00,0.59,       
+POS,0.83,0.52,0.00

@@ -1,9 +1,12 @@
+*.DS_Store*
+resources/decwave
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
 
-# C extensions
+# C extensionsgit 
 *.so
 
 # Distribution / packaging
