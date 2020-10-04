@@ -4,6 +4,8 @@ import json
 import redis
 from datetime import datetime
 
+import helpers
+
 r = redis.Redis(host='localhost', port=6379, db=0)
 DWM = serial.Serial(port="/dev/ttyACM0", baudrate=115200)
 print("Connected to " + DWM.name)
@@ -13,11 +15,8 @@ time.sleep(1)
 DWM.write("lec\r".encode())
 print("Encode")
 
-print('Work area')
-leftmost_x = 0
-rightmost_x = 10
-nearest_y = 0
-furthest_y = 10
+with 
+obstcales = 
 
 time.sleep(1)
 try:
@@ -29,14 +28,15 @@ try:
                 pos = {"x": data[data.index("POS")+1],
                         "y": data[data.index("POS")+2]}
                 print(pos)
-                check_workarea((pos['x'],pos['y']))
-                check_obstacles((pos['x'],pos['y']))
+
 
                 pos = json.dumps(pos)
 
+                
+
                 r.set(f'{datetime.now().isoformat()} POS', pos)
                 
-        time.sleep(1)
+        time.sleep(0.3)
     DWM.write("\r".encode())
     DWM.close()
 

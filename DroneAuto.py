@@ -32,7 +32,7 @@ if __name__ == '__main__':
     for e in msp.query('LINE'):
         print_entity(e)
         getPoints(e)
-
+    
     convex = edf.math.convex_hull_2d(allPoints)
     #offsetVertices = list(edf.math.offset_vertices_2d(convex,offset=0.01, closed=True))
     innerPoints = getPointsInConvex(allPoints, convex)

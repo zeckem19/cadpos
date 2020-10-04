@@ -67,24 +67,6 @@ def is_point_in_polyline(
 
 
 
-def is_point_in_ellipse(
-                p1 : Vector,
-                elli : Ellipse):
-    ''' Returns -1 if points is outside circle
-        Returns 1 if point is inside circle
-        
-        tolerance is 1e5, returns 0 if point is on 
-        boundary within tolerance level'''
-    p2 = circ.dxf.center
-    dist = dist_between_pts(p1, p2)
-    diff = dist - circ.dxf.radius
-    if diff > 1e5:
-        return -1
-    elif diff < -1e5:
-        return 1
-    else:
-        return 0
-
 def convert_line_to_points(start_pt, end_pt):
     ''' 3 cases: horizontal, vertical and diagonal'''
     if start_pt['x'] > end_pt['x'] or start_pt['y'] > end_pt['y']:
