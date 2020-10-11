@@ -1,7 +1,5 @@
 import math
-
 import ezdxf as edf
-from coordinates import Coordinate
 
 
 def dist_between_pts(p1, p2):
@@ -10,10 +8,9 @@ def dist_between_pts(p1, p2):
 def pythagoras(side1, side2):
     return math.sqrt(side1*side1 + side2*side2)
 
-
 def is_point_in_circ(
-                p1 : Vector,
-                circ : Circle):
+                p1 : edf.entities.point.Vector,
+                circ : edf.entities.circle):
     ''' Returns -1 if points is outside circle
         Returns 1 if point is inside circle
         
@@ -60,8 +57,8 @@ def is_point_in_ellipse(
         return 0
 
 def is_point_in_polyline(
-                p1 : Vector,
-                pline : polyline):
+                p1 : edf.entities.point.Vector,
+                pline : edf.entities.polyline):
     convex2 = edf.math.convex_hull_2d(list(pline.lwpoints))
     return edf.math.is_point_in_polygon_2d(p1, convex2)
 
@@ -84,4 +81,34 @@ def convert_line_to_points(start_pt, end_pt):
 
 def convert_block_to_points():
     pass
+
+
+def getSPFitLines(spline):
+    fitLines = list()
+    spPoints = spline.fit_points
+    for i in range(len(spPoints)):
+        startPoint = spPoints[i]
+        if i == len(spPoints)-1:
+            endPoint = spPoints[0]
+        else:
+            endPoint = spPoints[i+1]
+        fitLines.append((edf.math.Vec2(startPoint[0], startPoint[1]), edf.math.Vec2(endPoint[0], endPoint[1])))
+    return fitLines
+
+def isInSPLine(fitLines, testingPoint, spline):
+    isIntersection = list()
+    for point in spline.fit_points:
+        cuttingLine = (testingPoint, edf.math.Vec2(point[0], point[1]))
+        intersection = 0
+        for lines in fitLines:
+            intersectionPoint = edf.math.intersection_line_line_2d(cuttingLine, (lines[0], lines[1]))
+            if intersectionPoint:
+                intersection += 1
+        if intersection % 2 == 1:
+            isIntersection.append(True)
+        
+        if len([i for i in isIntersection if i == True]) == 3:
+            return True
+    
+    return False
 

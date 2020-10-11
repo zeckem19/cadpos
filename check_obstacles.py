@@ -14,9 +14,7 @@ print("Encode")
 time.sleep(1)
 DWM.write("lec\r".encode())
 print("Encode")
-
-with 
-obstcales = 
+ 
 
 time.sleep(1)
 try:
@@ -28,12 +26,8 @@ try:
                 pos = {"x": data[data.index("POS")+1],
                         "y": data[data.index("POS")+2]}
                 print(pos)
-
-
-                pos = json.dumps(pos)
-
                 
-
+                pos = json.dumps(pos)
                 r.set(f'{datetime.now().isoformat()} POS', pos)
                 
         time.sleep(0.3)
