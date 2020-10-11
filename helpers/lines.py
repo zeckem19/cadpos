@@ -1,3 +1,6 @@
+import math
+import ezdxf as edf
+
 def calculateLength(e):
     xy = e.dxf.end - e.dxf.start
     length = math.sqrt(xy[0]**2+xy[1]**2)
@@ -75,3 +78,18 @@ def getObstaclePolygons(innerLines, originalPoints):
             obstacles.append(obstacle)
             
     return obstacles
+
+def getWorkingArea(lines):
+    originalLines = list()
+    originalPoints = list()
+    originalVectorPoints = list()
+
+    for e in lines:
+        originalLines.append(e)
+        originalVectorPoints.append(e.dxf.start)
+        originalVectorPoints.append(e.dxf.end)
+        originalPoints.append((e.dxf.start.x, e.dxf.start.y))
+        originalPoints.append((e.dxf.end.x, e.dxf.end.y))
+    workingArea = edf.math.convex_hull_2d(originalVectorPoints)
+    return workingArea
+    
