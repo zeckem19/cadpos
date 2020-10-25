@@ -10,9 +10,9 @@ from datetime import datetime
 from helpers.lines import *
 from helpers.curves import *
 from helpers.layers import *
+from helpers.dxfConversion import *
 
-
-doc = edf.readfile('/home/pi/cadpos/resources/dxfs/Drawing12 - office table test.dxf')
+doc = edf.readfile('./resources/dxfs/Drawing12 - office table test.dxf')
 msp = doc.modelspace()
 entities = getEntitiesInLayer(msp)
 obstacles = entities['0']
@@ -32,28 +32,7 @@ with open('/home/pi/cadpos/resources/obsPoints','rb') as obsPoints_file:
     obstaclePoints = pickle.load(obsPoints_file)
 
 print(obstaclePoints[:20])
-def defineTagWorkingArea(orderOfTags, dxfWorkingArea):
-    anchorXY = dict()
-#     dxfWorkingArea = sorted(dxfWorkingArea, key=itemgetter(0,1))
-    
-    for i in range(len(orderOfTags)):
-        anchorXY.update({orderOfTags[i]: dxfWorkingArea[i]})
-    
-    return anchorXY
 
-def parseDeca(decaData, anchorXY):
-    baseX = anchorXY['A'][0]
-    baseY = anchorXY['A'][1]
-    
-    tagX = decaData['TAG'][0]
-    tagY = decaData['TAG'][1]
-    
-    tagDXFX = baseX + tagX
-    tagDXFY = baseY + tagY
-    
-    tagPosition =(round(tagDXFX,2), round(tagDXFY,2))
-    
-    return tagPosition
 
 DWM = serial.Serial(port="/dev/ttyACM0", baudrate=115200)
 DWM.write("\r\r".encode())
