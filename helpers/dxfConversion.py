@@ -9,9 +9,8 @@ def defineTagWorkingArea(orderOfTags, dxfWorkingArea):
     return anchorXY
 
 def parseDeca(decaData, anchorXY):
-    X = anchorXY.keys()[0]
-    baseX = anchorXY[X][0]
-    baseY = anchorXY[X][1]
+    baseX = min([anchorXY[pt][0] for pt in anchorXY.keys()])
+    baseY = min([anchorXY[pt][1] for pt in anchorXY.keys()])
     
     tagX = decaData['TAG'][0]
     tagY = decaData['TAG'][1]
