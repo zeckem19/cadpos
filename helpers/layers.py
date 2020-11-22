@@ -12,14 +12,15 @@ def getEntitiesInLayer(msp):
         
     return entitiesDict
 
-def discretizeWorkingArea(workingArea):
+def discretizeWorkingArea(workingArea, ratio = 1.0):
+    '''Ratio in case we want to change to dxf formatting in future'''
     allX = [i[0] for i in workingArea]
     allY = [i[1] for i in workingArea]
     
-    leftX = min(allX)
-    rightX = max(allX)
-    bottomY = min(allY)
-    topY = max(allY)
+    leftX = min(allX)/ratio
+    rightX = max(allX)/ratio
+    bottomY = min(allY)/ratio
+    topY = max(allY)/ratio
     
     xyPairs = np.mgrid[leftX:rightX+0.01:0.01, bottomY:topY+0.01:0.01].reshape(2,-1).T
     discretePoints = [edf.math.Vec2(i[0], i[1]) for i in xyPairs]

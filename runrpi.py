@@ -12,11 +12,12 @@ from helpers.curves import *
 from helpers.layers import *
 from helpers.dxfConversion import *
 
-doc = edf.readfile('./resources/dxfs/Drawing12 - office table test.dxf')
+doc = edf.readfile('/home/pi/cadpos/resources/dxfs/Drawing13 - office table test.dxf')
 msp = doc.modelspace()
 entities = getEntitiesInLayer(msp)
+ratio = float(entities['wording'][0].text.split(':')[1])
 obstacles = entities['0']
-WA = getWorkingArea(list(msp.query('LINE')))
+WA = getWorkingArea(msp)
 
 methods = {
     'LWPOLYLINE' : is_point_in_polyline,
@@ -28,10 +29,9 @@ methods = {
 discretisedWA = discretizeWorkingArea(WA)
 obstaclePoints = []
 counter =0
-with open('/home/pi/cadpos/resources/obsPoints','rb') as obsPoints_file:
-    obstaclePoints = pickle.load(obsPoints_file)
 
-print(obstaclePoints[:20])
+with open('/home/pi/cadpos/resources/obsPoints_drawing13','rb') as obsPoints_file:
+    obstaclePoints = pickle.load(obsPoints_file)
 
 
 DWM = serial.Serial(port="/dev/ttyACM0", baudrate=115200)
@@ -53,17 +53,16 @@ with open('pos_log', 'w') as logfile:
         #print(data)
         for idx, field in enumerate(fields):
             if field == 'AN1':
-                loc['A'] = [float(i) for i in fields[idx+2:idx+6]]
+                loc['A'] = [float(i)/ratio for i in fields[idx+2:idx+6]]
             elif field == 'AN2':
-                loc['B'] =  [float(i) for i in  fields[idx+2:idx+6]]
+                loc['B'] =  [float(i)/ratio for i in  fields[idx+2:idx+6]]
             elif field == 'AN0':
-                loc['C'] =  [float(i) for i in  fields[idx+2:idx+6]]
+                loc['C'] =  [float(i)/ratio for i in  fields[idx+2:idx+6]]
             elif field == 'POS':
-                loc['TAG'] =  [float(i) for i in fields[idx+1:idx+4]]
+                loc['TAG'] =  [float(i)/ratio for i in fields[idx+1:idx+4]]
         
         my_loc_in_dxf = parseDeca(loc, anchorXY)
         msg = f'{datetime.now()}: loc deca:{loc["TAG"]};  log dxf = {my_loc_in_dxf}\n'
-#         logfile.write(msg)
         print(msg)
         if my_loc_in_dxf in obstaclePoints:
             print('INSIDE OBS') 

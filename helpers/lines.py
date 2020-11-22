@@ -1,5 +1,7 @@
 import math
 import ezdxf as edf
+from operator import itemgetter
+
 
 def calculateLength(e):
     xy = e.dxf.end - e.dxf.start
@@ -79,17 +81,36 @@ def getObstaclePolygons(innerLines, originalPoints):
             
     return obstacles
 
-def getWorkingArea(lines):
-    originalLines = list()
-    originalPoints = list()
-    originalVectorPoints = list()
+def getWorkingArea(msp):
+    originalVectorPoints = []
+    for e in msp.query('LINE'):
+        originalVectorPoints.append((e.dxf.start[0], e.dxf.start[1]))
+        originalVectorPoints.append((e.dxf.end[0], e.dxf.end[1]))
 
-    for e in lines:
-        originalLines.append(e)
-        originalVectorPoints.append(e.dxf.start)
-        originalVectorPoints.append(e.dxf.end)
-        originalPoints.append((e.dxf.start.x, e.dxf.start.y))
-        originalPoints.append((e.dxf.end.x, e.dxf.end.y))
-    workingArea = edf.math.convex_hull_2d(originalVectorPoints)
-    return workingArea
+    for e in msp.query('LWPOLYLINE'):
+        vertices = list(e.vertices())
+        for v in vertices:
+            originalVectorPoints.append(v)
+
+    originalVectorPoints = [(round(i[0],2), round(i[1],2)) for i in originalVectorPoints]
+
+    sortedVectorPoints = sorted(originalVectorPoints, key=itemgetter(0,1))
+    origin = sortedVectorPoints[0]
+    topXY = sortedVectorPoints[-1]
+    
+    sortedVectorPointsLeft = [i for i in sortedVectorPoints if i[0]==origin[0]]
+    sortedVectorPointsLeft = sorted(sortedVectorPointsLeft, key=itemgetter(0,1))
+    
+    topYLeft = sortedVectorPointsLeft[-1]
+    
+    sortedVectorPointsRight = [i for i in sortedVectorPoints if i[0]==topXY[0]]
+    sortedVectorPointsRight = sorted(sortedVectorPointsRight, key=itemgetter(1,0))
+    
+    bottomYRight = sortedVectorPointsRight[0]
+    
+    workingArea = ((origin[0], origin[1]), (topYLeft[0], topYLeft[1]), (topXY[0], topXY[1]), (bottomYRight[0], bottomYRight[1]))
+
+    return workingArea    
+    
+
     
