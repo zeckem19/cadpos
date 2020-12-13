@@ -4,6 +4,7 @@ import ezdxf as edf
 import math
 import pickle
 import time
+import asyncio
 
 from datetime import datetime
 
@@ -43,27 +44,29 @@ DWM.write("lec\r".encode())
 loc = {}
 
 anchorXY = defineTagWorkingArea(['C','B','A'], WA)
-with open('pos_log', 'w') as logfile:
-    while True:
-        time.sleep(1)
-        data = DWM.readline().decode("utf-8") 
-        fields = data.strip().split(',')
-        if len(fields) < 6:
-            continue
-        #print(data)
-        for idx, field in enumerate(fields):
-            if field == 'AN1':
-                loc['A'] = [float(i)/ratio for i in fields[idx+2:idx+6]]
-            elif field == 'AN2':
-                loc['B'] =  [float(i)/ratio for i in  fields[idx+2:idx+6]]
-            elif field == 'AN0':
-                loc['C'] =  [float(i)/ratio for i in  fields[idx+2:idx+6]]
-            elif field == 'POS':
-                loc['TAG'] =  [float(i)/ratio for i in fields[idx+1:idx+4]]
-        
-        my_loc_in_dxf = parseDeca(loc, anchorXY)
-        msg = f'{datetime.now()}: loc deca:{loc["TAG"]};  log dxf = {my_loc_in_dxf}\n'
-        print(msg)
-        if my_loc_in_dxf in obstaclePoints:
-            print('INSIDE OBS') 
+
+async def run():
+    with open('pos_log', 'w') as logfile:
+        while True:
+            time.sleep(1)
+            data = DWM.readline().decode("utf-8") 
+            fields = data.strip().split(',')
+            if len(fields) < 6:
+                continue
+            #print(data)
+            for idx, field in enumerate(fields):
+                if field == 'AN1':
+                    loc['A'] = [float(i)/ratio for i in fields[idx+2:idx+6]]
+                elif field == 'AN2':
+                    loc['B'] =  [float(i)/ratio for i in  fields[idx+2:idx+6]]
+                elif field == 'AN0':
+                    loc['C'] =  [float(i)/ratio for i in  fields[idx+2:idx+6]]
+                elif field == 'POS':
+                    loc['TAG'] =  [float(i)/ratio for i in fields[idx+1:idx+4]]
+
+            my_loc_in_dxf = parseDeca(loc, anchorXY)
+            msg = f'{datetime.now()}: loc deca:{loc["TAG"]};  log dxf = {my_loc_in_dxf}\n'
+            print(msg)
+            if my_loc_in_dxf in obstaclePoints:
+                print('INSIDE OBS') 
     
