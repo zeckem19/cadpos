@@ -18,7 +18,7 @@ if __name__ == "__main__":
     obstacles = entities['0']
     WA = getWorkingArea(msp)
     working_area_file = './resources/pickle/latest_wa'
-    with open(working_area_file,'w') as waf:
+    with open(working_area_file,'wb') as waf:
         print(f"Saving working area")
         pickle.dump(WA, waf)
 
