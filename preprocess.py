@@ -17,6 +17,9 @@ if __name__ == "__main__":
     entities = getEntitiesInLayer(msp)
     obstacles = entities['0']
     WA = getWorkingArea(list(msp.query('LINE')))
+    working_area_file = './resources/pickle/latest_wa'
+    print(f"Saving working area")
+    pickle.dump(WA, working_area_file)
 
     methods = {
         'LWPOLYLINE' : is_point_in_polyline,
