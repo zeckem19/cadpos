@@ -5,11 +5,13 @@ from helpers.lines import *
 from helpers.curves import *
 from helpers.layers import *
 
+
 doc = edf.readfile('/Users/zoelim/cadpos/resources/dxfs/Drawing5- 2 squares(dimensions).dxf')
 msp = doc.modelspace()
 entities = getEntitiesInLayer(msp)
 obstacles = entities['0']
 WA = getWorkingArea(list(msp.query('LINE')))
+
 methods = {
     'LWPOLYLINE' : is_point_in_polyline,
     'CIRCLE' : is_point_in_circ,
