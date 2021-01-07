@@ -9,7 +9,7 @@ def pythagoras(side1, side2):
     return math.sqrt(side1*side1 + side2*side2)
 
 def is_point_in_circ(
-                p1 : edf.entities.point.Vector,
+                p1, #: edf.entities.point.Vector,
                 circ : edf.entities.circle):
     ''' Returns -1 if points is outside circle
         Returns 1 if point is inside circle
@@ -27,7 +27,7 @@ def is_point_in_circ(
         return 0
 
 def is_point_in_ellipse(
-        p1 : edf.entities.point.Vector,
+        p1, #: edf.entities.point.Vector,
         ell : edf.entities.ellipse.Ellipse):
     ''' Returns -1 if points is outside circle
         Returns 1 if point is inside circle
@@ -57,7 +57,7 @@ def is_point_in_ellipse(
         return 0
 
 def is_point_in_polyline(
-                p1 : edf.entities.point.Vector,
+                p1, # : edf.entities.point.Vector,
                 pline : edf.entities.polyline):
     convex2 = edf.math.convex_hull_2d(list(pline.lwpoints))
     return edf.math.is_point_in_polygon_2d(p1, convex2)

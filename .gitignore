@@ -1,7 +1,7 @@
 *.DS_Store*
 resources/*
 .ipynb_checkpoints*
-
+cadpos_venv/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

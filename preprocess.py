@@ -4,6 +4,8 @@ import math
 import pickle
 
 from tqdm import tqdm
+import shapely.geometry as sg
+
 from helpers.lines import *
 from helpers.curves import *
 from helpers.layers import *
@@ -73,9 +75,13 @@ if __name__ == "__main__":
     shapely_obs_points = []
     # Intersect lines and obstacles
     for line in tqdm(lines, desc='Lines progress'):
-        for so in tqdm(shapely_obstacles, desc='Obstacle progress'):
-            obs_points.append(line.intersection(so).wkt)
-    
+        for so in shapely_obstacles:
+            intersect_points = line.intersection(so)
+            if isinstance(intersect_points, sg.point.Point):
+                shapely_obs_points.append(intersect_points)
+            elif isinstance(intersect_points, sg.multipoint.MultiPoint):
+                shapely_obs_points.extend(intersect_points)
+
     ## Keep for future use with Spline ##
     # discretisedWA = discretizeWorkingArea(WA)
     # obstaclePoints = []
@@ -87,8 +93,9 @@ if __name__ == "__main__":
     #             labelPoint = methods[entity.dxftype()](point, entity)
     #             if labelPoint >= 0:
     #                 obstaclePoints.append(point)
+    
 
-    print(f"Serialising obstacle points...")
+    print(f"Serialising {len(shapely_obs_points)} obstacle points...")
     if len(inputs) >= 3:
         output_path = inputs[2]
     else:
@@ -96,7 +103,7 @@ if __name__ == "__main__":
         output_path = f'./resources/pickle/{fil}_pickle'
 
     with open(output_path,'wb') as obs_file:
-        pickle.dump(obs_points, obs_file)
+        pickle.dump(shapely_obs_points, obs_file)
     
     print(f"Saving obstacle pickle file_path to run")
     with open('./resources/pickle/latest','w') as record:
