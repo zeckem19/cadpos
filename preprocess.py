@@ -117,6 +117,6 @@ if __name__ == "__main__":
         col = int((pt.x - WA[0][0])*100)
         pathfinding_matrix[row][col] = 0
     
-    print(pathfinding_matrix)
+#     print(pathfinding_matrix)
 
 
