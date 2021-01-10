@@ -25,4 +25,20 @@ def discretizeWorkingArea(workingArea, ratio = 1.0):
     xyPairs = np.mgrid[leftX:rightX+0.01:0.01, bottomY:topY+0.01:0.01].reshape(2,-1).T
     discretePoints = [edf.math.Vec2(i[0], i[1]) for i in xyPairs]
 
-    return discretePoints            
+    return discretePoints
+
+def getPathFindingWA(WArea):
+    workMatrix = []
+    
+    xRange = WArea[2][0] - WArea[0][0]
+    yRange = WArea[2][1] - WArea[0][1]
+    
+    xLength = int(xRange/0.01)
+    yLength = int(yRange/0.01)
+    
+    for i in range(yLength):
+        workMatrixInner = [1 for i in range(xLength)]
+        
+        workMatrix.append([workMatrixInner])
+        
+    return workMatrix
