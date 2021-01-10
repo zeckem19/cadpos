@@ -103,7 +103,7 @@ if __name__ == "__main__":
         output_path = f'./resources/pickle/{fil}_pickle'
 
     with open(output_path,'wb') as obs_file:
-        pickle.dump(shapely_obs_points, output_path)
+        pickle.dump(shapely_obs_points, obs_file)
     
     print(f"Saving obstacle pickle file_path to run")
     with open('./resources/pickle/latest','w') as record:
