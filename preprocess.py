@@ -3,12 +3,17 @@ import ezdxf as edf
 import math
 import pickle
 
+from pathfinding.core.diagonal_movement import DiagonalMovement
+from pathfinding.core.grid import Grid
+from pathfinding.finder.a_star import AStarFinder
+
 from tqdm import tqdm
 import shapely.geometry as sg
 
 from helpers.lines import *
 from helpers.curves import *
 from helpers.layers import *
+
 
 
 methods = {
@@ -117,6 +122,11 @@ if __name__ == "__main__":
         col = int((pt.x - WA[0][0])*100)
         pathfinding_matrix[row][col] = 0
     
-#     print(pathfinding_matrix)
+    with open('./resources/pickle/pathfinding_matrix','wb') as pf_matrix:
+        pickle.dump(pathfinding_matrix, pf_matrix)
 
+    print('Build graph')
+    grid = Grid(pathfinding_matrix)
 
+    # start = grid.node(, )
+    # end = grid.node(2, 2)
