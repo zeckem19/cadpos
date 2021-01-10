@@ -50,7 +50,7 @@ if __name__ == "__main__":
             continue
         
     WA = getWorkingArea(msp)
-    working_area_file = './resources/pickle/latest_wa'
+    working_area_file = './resources/pickle/latest_working_area'
     with open(working_area_file,'wb') as waf:
         print(f"Saving working area")
         pickle.dump(WA, waf)
@@ -100,10 +100,10 @@ if __name__ == "__main__":
         output_path = inputs[2]
     else:
         fil = fil_path.split('/')[-1]
-        output_path = f'./resources/pickle/{fil}_pickle'
+        output_path = f'./resources/pickle/{fil}_pickle_obstacles'
 
     with open(output_path,'wb') as obs_file:
-        pickle.dump(shapely_obs_points, output_path)
+        pickle.dump(shapely_obs_points, obs_file)
     
     print(f"Saving obstacle pickle file_path to run")
     with open('./resources/pickle/latest','w') as record:
