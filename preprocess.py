@@ -109,7 +109,14 @@ if __name__ == "__main__":
     with open('./resources/pickle/latest','w') as record:
         record.write(f'{output_path}')
     
-
+    print('Pathfinding.. ')
+    print('Adding obstacle points into Pathfinding matrix')
+    pathfinding_matrix = getPathFindingWA(WA)
+    for pt in shapely_obs_points:
+        row = int((pt.y - WA[0][1])*100)
+        col = int((pt.x - WA[0][0])*100)
+        pathfinding_matrix[row][col] = 0
     
+    print(pathfinding_matrix)
 
 
