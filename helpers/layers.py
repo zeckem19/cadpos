@@ -39,6 +39,6 @@ def getPathFindingWA(WArea):
     for i in range(yLength):
         workMatrixInner = [1 for i in range(xLength)]
         
-        workMatrix.append([workMatrixInner])
+        workMatrix.append(workMatrixInner)
         
     return workMatrix
