@@ -6,7 +6,8 @@ cadpos_venv/
 __pycache__/
 *.py[cod]
 *$py.class
-
+yahboom/images*
+yahboom/RaspberryPi-4WD-Car/Tools*
 # C extensionsgit 
 *.so
 
